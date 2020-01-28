@@ -7,7 +7,7 @@ let listaDeNumeros = []
 
 function inserirNovoNumero() {
   let novoNumeroString = document.querySelector('#numero').value
-  let novoNumero = Number(document.querySelector('#numero').value)
+  let novoNumero = Number(novoNumeroString)
   mensagensContainer.innerHTML = ''
   resultadoContainer.innerHTML = ''
   inputNumero.value = ''
@@ -37,25 +37,32 @@ function mostrarResultados() {
   }
 }
 
-function calcularASomaDeTodosOsNumeros(listaDeNumeros) {
-  let somaDosNumeros = 0
-  for(posicao = 0; posicao < listaDeNumeros.length; posicao++) {
-    somaDosNumeros += listaDeNumeros[posicao]
+function verificarSeONumeroEhValido(numeroString) {
+  let numero = Number(numeroString)
+  if(numeroString === '') {
+    throw 'O campo está vazio'
   }
-  return somaDosNumeros
+  if(numero < 1) {
+    throw 'O número é menor que 1'
+  }
+  if(numero > 100) {
+    throw 'O número é maior que 100'
+  }
+  if(listaDeNumeros.indexOf(numero) != -1) {
+      throw 'Este número já foi adicionado'
+  }
 }
 
-function calcularAMediaDeTodosOsNumeros(listaDeNumeros) {
-  let somaDosNumeros = calcularASomaDeTodosOsNumeros(listaDeNumeros)
-  return somaDosNumeros / listaDeNumeros.length
+function adicionarNumeroNoArray(numero) {
+  listaDeNumeros.push(numero)
 }
 
-function ordenarNumeros(a, b) {
-  return a - b
-}
-
-function ordenarListaDeNumeros(listaDeNumeros) {
-  return listaDeNumeros.sort(ordenarNumeros)
+function mostrarNumeros(listaDeNumeros) {
+  let numerosContainer = document.querySelector('#numeros')
+  numerosContainer.innerHTML = ''
+  for (posicao = 0; posicao < listaDeNumeros.length; posicao++) {
+    numerosContainer.innerHTML += `${listaDeNumeros[posicao]} | `
+  }
 }
 
 function calcularAQuantidadeDeNumerosCadastrados(listaDeNumeros) {
@@ -72,32 +79,25 @@ function obterOMaiorNumero(listaDeNumeros) {
   return listaDeNumeros[listaDeNumeros.length-1]
 }
 
-function mostrarNumeros(listaDeNumeros) {
-  let numerosContainer = document.querySelector('#numeros')
-  numerosContainer.innerHTML = ''
-  for (posicao = 0; posicao < listaDeNumeros.length; posicao++) {
-    numerosContainer.innerHTML += `${listaDeNumeros[posicao]} | `
-  }
+function ordenarListaDeNumeros(listaDeNumeros) {
+  return listaDeNumeros.sort(ordenarNumeros)
 }
 
-function adicionarNumeroNoArray(numero) {
-  listaDeNumeros.push(numero)
+function ordenarNumeros(a, b) {
+  return a - b
 }
 
-function verificarSeONumeroEhValido(numeroString) {
-  let numero = Number(numeroString)
-  if(numeroString === '') {
-    throw 'O campo está vazio'
+function calcularASomaDeTodosOsNumeros(listaDeNumeros) {
+  let somaDosNumeros = 0
+  for(posicao = 0; posicao < listaDeNumeros.length; posicao++) {
+    somaDosNumeros += listaDeNumeros[posicao]
   }
-  if(numero < 1) {
-    throw 'O número é menor que 1'
-  }
-  if(numero > 100) {
-    throw 'O número é maior que 100'
-  }
-  if(listaDeNumeros.indexOf(numero) != -1) {
-      throw 'Este número já foi adicionado'
-  }
+  return somaDosNumeros
+}
+
+function calcularAMediaDeTodosOsNumeros(listaDeNumeros) {
+  let somaDosNumeros = calcularASomaDeTodosOsNumeros(listaDeNumeros)
+  return somaDosNumeros / listaDeNumeros.length
 }
 
 // ✔ Se os resultados estiverem sendo mostrados e o usuário adicionar um outro número, deve esconder os resultados e adicionar o número
